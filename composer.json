@@ -1,0 +1,19 @@
+{
+  "name": "wangyu/tp-anntation",
+  "description": "TP5.1 的反射验证器核心类，含参数中间件封装，路由参数验证中间件，方法注释参数提取器，基于`wangyu/reflex-core`扩展",
+  "authors": [
+    {
+      "name": "wangyu",
+      "email": "china_wangyu@aliyun.com"
+    }
+  ],
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "WangYu\\": "src"
+    }
+  },
+  "require": {
+    "php": ">=7.1.0"
+  }
+}

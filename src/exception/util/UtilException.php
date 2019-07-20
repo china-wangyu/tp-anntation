@@ -1,0 +1,13 @@
+<?php
+/** Created By wene<china_wangyu@aliyun.com>, Data: 2019/7/16 */
+
+
+namespace WangYu\utils\exception;
+
+
+use WangYu\exception\Exception;
+
+class UtilException extends Exception
+{
+    protected $user_code = 9000; // 工具箱报错code，从9000起
+}

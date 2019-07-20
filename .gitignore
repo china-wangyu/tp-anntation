@@ -1,0 +1,15 @@
+# Created by .ignore support plugin (hsz.mobi)
+### ThinkPHP template
+# gitignore template for ThinkPHP v3.2.3
+# website: http://www.thinkphp.cn/
+
+# vendor files
+/vendor
+
+# idea configure file
+/.idea
+/.vscode
+
+# composer lock
+.composer.lock
+
