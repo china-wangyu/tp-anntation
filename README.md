@@ -4,12 +4,12 @@
 
 ## 简介
 
-TP5.1 的反射验证器核心类，含参数中间件封装，路由参数验证中间件，方法注释参数提取器，基于`wangyu/reflex-core`扩展
+ThinkPHP5 的简易注解扩展，含注解路由（支持路由分组），注解参数验证（支持验证器和参数验证），注解Api文档生成等功能
 
 ## 安装
 
 ```bash
-composer require wangyu/tp-validate
+composer require wangyu/tp-anntation
 ```
 
 ## 快速入门
