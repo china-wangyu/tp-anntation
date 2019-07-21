@@ -21,29 +21,20 @@ class TpHttpException extends Handle
     public function render(\Exception $e)
     {
         try {
-            if ($e instanceof \WangYu\exception\Exception){
+            if (config('app_debug')) {
+                return parent::render($e);
+            } elseif (php_sapi_name() == 'cli') {
+                return parent::render($e);
+            } else {
                 $result = $this->output(
                     $e->getMessage(),
-                    $e->getUserCode(),
-                    $e->getCode()
-                );
-            }else{
-                if (config('app_debug')) {
-                    return parent::render($e);
-                }elseif (strpos(php_sapi_name(), 'cli') !== false){
-                    return parent::render($e);
-                } else {
-                    $result = $this->output(
-                        $e->getMessage(),
-                        method_exists ($e,'getUserCode') ? $e->getUserCode() : 1000 ,
-                        $e->getCode());
-                    $this->recordErrorLog($e);
-                }
+                    method_exists($e, 'getUserCode') ? $e->getUserCode() : 1000,
+                    $e->getCode());
+                $this->recordErrorLog($e);
             }
         } catch (\Exception $exception) {
-            $result = $this->output($exception->getMessage(),10000);
+            $result = $this->output($exception->getMessage(), 10000);
         }
-
         return json($result, $result['code'] ?? 500);
     }
 
@@ -54,7 +45,7 @@ class TpHttpException extends Handle
      * @param int $code
      * @return array
      */
-    private function output(string $msg = '服務器內部錯誤，不想告訴你',int $user_code = 1000,int $code = 500)
+    private function output(string $msg = '服務器內部錯誤，不想告訴你', int $user_code = 1000, int $code = 500)
     {
         return [
             'code' => $user_code ?? 500,

@@ -29,17 +29,18 @@ class ApiAnnotation
     /**
      * @var array $data 返回数据
      */
-    public $data = [] ;
+    public $data = [];
 
-    public function __construct(array $apiFile = []){
-        try{
+    public function __construct(array $apiFile = [])
+    {
+        try {
             if (empty($apiFile)) return $this->data;
             foreach ($apiFile as $file) {
                 $this->object = File::getObject($file);
                 $this->annotation = new Annotation($this->object);
                 $this->data[get_class($this->object)] = $this->get();
             }
-        }catch (\Exception $exception){
+        } catch (\Exception $exception) {
             throw new AnnotationException($exception->getMessage());
         }
     }
@@ -49,31 +50,35 @@ class ApiAnnotation
      * @return array
      * @throws AnnotationException
      */
-    protected function get():array {
-        try{
+    protected function get(): array
+    {
+        try {
             return [
                 'class' => $this->getClass(),
                 'actions' => $this->getActions(),
             ];
-        }catch (\Exception $exception){
+        } catch (\Exception $exception) {
             throw new AnnotationException($exception->getMessage());
         }
     }
 
-    protected function getClass():array {
+    protected function getClass(): array
+    {
         return $this->annotation->getClass();
     }
 
-    protected function getActions():array {
+    protected function getActions(): array
+    {
         $methods = Helper::getMethods($this->object);
-        if(empty($methods)) return [];
-        foreach ($methods as &$method){
+        if (empty($methods)) return [];
+        foreach ($methods as &$method) {
             $method = $this->getAction($method);
         }
         return $methods;
     }
 
-    protected function getAction(string $method):array {
+    protected function getAction(string $method): array
+    {
         $this->annotation->setMethod($method);
         return $this->annotation->getAction();
     }

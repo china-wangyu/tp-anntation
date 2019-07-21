@@ -18,9 +18,9 @@ class Route extends Router
 
     public $data;
 
-    protected static function getInstance():self
+    protected static function getInstance(): self
     {
-        if (!isset(static::$instance)){
+        if (!isset(static::$instance)) {
             return new static();
         }
         return static::$instance;
@@ -33,12 +33,12 @@ class Route extends Router
      * @return Route
      * @throws AnnotationException
      */
-    public static function reflex(string $module = 'api', $middleware = []):self
+    public static function reflex(string $module = 'api', $middleware = []): self
     {
         $_this = static::getInstance();
         try {
             foreach (Helper::getApiAnnotation($module) as $item) {
-                $_this->setRoute($item,$middleware);
+                $_this->setRoute($item, $middleware);
             }
             return $_this;
         } catch (\Exception $exception) {
@@ -52,7 +52,7 @@ class Route extends Router
      * @param array $middleware
      * @throws \Exception
      */
-    protected function setRoute(array $api,array $middleware = [])
+    protected function setRoute(array $api, array $middleware = [])
     {
         try {
             if (empty($api)) return;
@@ -61,7 +61,7 @@ class Route extends Router
                     $this->setActionRule($api['class']['group'], $action['route']['rule']),
                     $this->setActionRoute($api['class']['class'], $action['action']),
                     $this->setActionMethod($action['route']['method']),
-                    $this->setMiddleware($api['class']['middleware'], $action['middleware'],$middleware)
+                    $this->setMiddleware($api['class']['middleware'], $action['middleware'], $middleware)
                 );
             }
         } catch (\Exception $exception) {
@@ -77,19 +77,19 @@ class Route extends Router
      * @return array
      * @throws \Exception
      */
-    protected function setMiddleware(array $clsMiddleware, array $funcMiddleware,array $routeMiddleware = []): array
+    protected function setMiddleware(array $clsMiddleware, array $funcMiddleware, array $routeMiddleware = []): array
     {
-        try{
+        try {
             // 设置类中间件
             if (!empty($clsMiddleware)) {
-                return  empty($routeMiddleware) ? $clsMiddleware : array_merge($clsMiddleware, $routeMiddleware);
+                return empty($routeMiddleware) ? $clsMiddleware : array_merge($clsMiddleware, $routeMiddleware);
             }
             // 设置方法中间件
             if (!empty($funcMiddleware)) {
                 return empty($routeMiddleware) ? $funcMiddleware : array_merge($funcMiddleware, $routeMiddleware);
             }
             return [];
-        }catch (\Exception $exception){
+        } catch (\Exception $exception) {
             throw new \Exception($exception->getMessage());
         }
     }
@@ -103,7 +103,7 @@ class Route extends Router
      */
     protected function setActionRule($classRule, $actionRule): string
     {
-        try{
+        try {
             // 类路由和方法路由规则为空
             if (empty($classRule) and empty($actionRule)) return '';
             // 类路由不为空，方法路由为空
@@ -111,13 +111,13 @@ class Route extends Router
             // 类路由为空，方法路由不为空
             if (empty($classRule) and !empty($actionRule)) return $actionRule;
             // 都不为空的情况下，1.方法路由包含类路由规则
-            if (strstr($actionRule,$classRule)) return $actionRule;
+            if (strstr($actionRule, $classRule)) return $actionRule;
             // 都不为空的情况下，2.方法路由规则为根规则
-            if (substr($actionRule,0,1) == '/') return $actionRule;
+            if (substr($actionRule, 0, 1) == '/') return $actionRule;
             // 都不为空的情况下，3. 拼接形成最后的规则
-            return $classRule.'/'.$actionRule;
+            return $classRule . '/' . $actionRule;
 
-        }catch (\Exception $exception){
+        } catch (\Exception $exception) {
             throw new \Exception($exception->getMessage());
         }
 
@@ -133,11 +133,11 @@ class Route extends Router
     protected function setActionRoute(string $class, string $action): string
     {
         try {
-            $route = str_replace(env('APP_NAMESPACE').'\\','',$class);
-            $route = str_replace('controller\\','',$route);
-            $route = explode('\\',$route);
-            $route = $route[0].'/'.$route[1].(isset($route[2])?'.'.$route[2]:'');
-            $route = $route.'/'.$action;
+            $route = str_replace(env('APP_NAMESPACE') . '\\', '', $class);
+            $route = str_replace('controller\\', '', $route);
+            $route = explode('\\', $route);
+            $route = $route[0] . '/' . $route[1] . (isset($route[2]) ? '.' . $route[2] : '');
+            $route = $route . '/' . $action;
             return $route;
         } catch (\Exception $exception) {
             throw new \Exception($exception->getMessage());
@@ -161,7 +161,7 @@ class Route extends Router
      * @param string $method
      * @param array $middleware
      */
-    public function set(string $rule, string $route, string $method,array $middleware = []): void
+    public function set(string $rule, string $route, string $method, array $middleware = []): void
     {
         $this->data[$rule] = [
             'rule' => $rule,

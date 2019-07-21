@@ -20,7 +20,7 @@ class AnnotationAnalyse
     /**
      * @var array $trims 注释提炼规则
      */
-    private $trims = array('     ','  ', '/**', '*/', "\t", "\n", "\r", '$', '*');
+    private $trims = array('     ', '  ', '/**', '*/', "\t", "\n", "\r", '$', '*');
 
     /**
      * @var array $pattern 重置特殊规则
@@ -72,7 +72,8 @@ class AnnotationAnalyse
      * @return array
      * @throws \Exception
      */
-    public function get(string $func, $keys) {
+    public function get(string $func, $keys)
+    {
         $this->func = $func;
         $this->keys = $keys;
         $this->trim();
@@ -86,15 +87,16 @@ class AnnotationAnalyse
      * @step1 清除空格等多余字符
      * @throws \Exception
      */
-    private function trim(){
-        try{
-            if(empty($this->annotation)) return ;
-            if (strstr($this->annotation,$this->delimiter)){
-                throw new \Exception('请不要在注释内容添加‘'.$this->delimiter.'’符号，‘'.$this->delimiter.'’会影响注释内容提取');
+    private function trim()
+    {
+        try {
+            if (empty($this->annotation)) return;
+            if (strstr($this->annotation, $this->delimiter)) {
+                throw new \Exception('请不要在注释内容添加‘' . $this->delimiter . '’符号，‘' . $this->delimiter . '’会影响注释内容提取');
             }
             $this->data = str_replace($this->trims, '', trim($this->annotation));
-        }catch (\Exception $exception){
-            throw new AnnotationException('@step1.清除空格等多余字符.'.$exception->getMessage());
+        } catch (\Exception $exception) {
+            throw new AnnotationException('@step1.清除空格等多余字符.' . $exception->getMessage());
         }
     }
 
@@ -102,11 +104,12 @@ class AnnotationAnalyse
      * @step2 字符串转数组
      * @throws AnnotationException
      */
-    private function toArray(){
-        try{
+    private function toArray()
+    {
+        try {
             $this->data = array_filter(explode($this->mark, trim($this->data)));
-        }catch (\Exception $exception){
-            throw new AnnotationException('@step2.字符串转数组.'.$exception->getMessage());
+        } catch (\Exception $exception) {
+            throw new AnnotationException('@step2.字符串转数组.' . $exception->getMessage());
         }
     }
 
@@ -116,21 +119,21 @@ class AnnotationAnalyse
      */
     private function regular()
     {
-        try{
+        try {
             $argc = [];
-            $match = sprintf($this->match,$this->func,$this->delimiter);
-            foreach ($this->data as $item){
-                if(!strstr($item,$this->func))continue;
+            $match = sprintf($this->match, $this->func, $this->delimiter);
+            foreach ($this->data as $item) {
+                if (!strstr($item, $this->func)) continue;
                 $item = preg_replace($this->pattern['match'], $this->pattern['replace'], $item);
-                preg_match($match,$item,$res,PREG_OFFSET_CAPTURE);
-                if(!isset($res[1]))continue;
-                $item = str_replace('\'','',trim($res[1][0]));
-                $item = explode($this->delimiter,$item);
-                $argc = array_merge([$item],$argc);
+                preg_match($match, $item, $res, PREG_OFFSET_CAPTURE);
+                if (!isset($res[1])) continue;
+                $item = str_replace('\'', '', trim($res[1][0]));
+                $item = explode($this->delimiter, $item);
+                $argc = array_merge([$item], $argc);
             }
             $this->data = $argc;
-        }catch (\Exception $exception){
-            throw new AnnotationException('@step3.正则匹配.'.$exception->getMessage());
+        } catch (\Exception $exception) {
+            throw new AnnotationException('@step3.正则匹配.' . $exception->getMessage());
         }
     }
 
@@ -139,20 +142,20 @@ class AnnotationAnalyse
      */
     private function format()
     {
-        try{
-            if(empty($this->data)) return;
+        try {
+            if (empty($this->data)) return;
             if (empty($this->keys)) {
                 $this->data = $this->data[0];
                 return;
             }
-            if (isset($this->data[1])){
-                foreach ($this->data as &$item){
+            if (isset($this->data[1])) {
+                foreach ($this->data as &$item) {
                     $item = $this->sort($item);
                 }
-            }else{
+            } else {
                 $this->data = $this->sort($this->data[0]);
             }
-        }catch (\Exception $exception){
+        } catch (\Exception $exception) {
             throw new \Exception($exception->getMessage());
         }
     }
@@ -165,18 +168,18 @@ class AnnotationAnalyse
      */
     private function sort(array $item)
     {
-        try{
+        try {
             $result = [];
             if (empty($item)) return '';
             if (!isset($item[1])) return $item[0];
-            if(is_array($item)){
-                if (count($this->keys) == count($item)) return array_combine($this->keys,$item);
-                foreach ($this->keys as $index => $value){
+            if (is_array($item)) {
+                if (count($this->keys) == count($item)) return array_combine($this->keys, $item);
+                foreach ($this->keys as $index => $value) {
                     $result[$value] = $item[$index] ?? '';
                 }
             }
             return $result;
-        }catch (\Exception $exception){
+        } catch (\Exception $exception) {
             throw new \Exception($exception->getMessage());
         }
     }

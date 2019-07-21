@@ -38,8 +38,8 @@ final class Annotation
      */
     protected $func = [
         'doc' => 'doc', // 文档 @doc('notes')
-        'route' => ['rule','method'], // 路由规则 @route('rule','method')
-        'param' => ['name','doc','rule','default'], // 参数验证 @param('name','doc','rule','default')
+        'route' => ['rule', 'method'], // 路由规则 @route('rule','method')
+        'param' => ['name', 'doc', 'rule', 'default'], // 参数验证 @param('name','doc','rule','default')
         'validate' => 'validateModel', // 参数验证 @validate('validateModel')
         'middleware' => [], // 中间件注册函数 @middleware('中间件名称1','中间件名称2', ....)
         'success' => 'json', // 中间件注册函数 @middleware('中间件名称1','中间件名称2', ....)
@@ -54,13 +54,13 @@ final class Annotation
     public function __construct($object)
     {
         if (!is_object($object)) {
-            throw new  AnnotationException('获取注解内容失败，参数要求对象，你给的是'.gettype($object));
+            throw new  AnnotationException('获取注解内容失败，参数要求对象，你给的是' . gettype($object));
         }
-        try{
+        try {
             $this->rc = new \ReflectionClass($object);
             $this->analyse = new AnnotationAnalyse($this->rc->getDocComment());
-        }catch (\Exception $exception){
-            throw new  AnnotationException(get_class($object).'类不存在');
+        } catch (\Exception $exception) {
+            throw new  AnnotationException(get_class($object) . '类不存在');
         }
     }
 
@@ -70,30 +70,32 @@ final class Annotation
      * @return Annotation
      * @throws AnnotationException
      */
-    public function setMethod(string $method):self
+    public function setMethod(string $method): self
     {
-        try{
+        try {
             $this->rm = $this->rc->getMethod($method);
             $this->analyse = new AnnotationAnalyse($this->rm->getDocComment());
             return $this;
-        }catch (\Exception $exception){
-            throw new  AnnotationException($this->rc->getName().'类不存在');
+        } catch (\Exception $exception) {
+            throw new  AnnotationException($this->rc->getName() . '类不存在');
         }
     }
 
 
-    public function getClass():array {
+    public function getClass(): array
+    {
         $class['class'] = $this->rc->getName();
-        foreach ($this->cls as $markName => $markKeys){
-            $class[$markName] = $this->analyse->get($markName,$markKeys);
+        foreach ($this->cls as $markName => $markKeys) {
+            $class[$markName] = $this->analyse->get($markName, $markKeys);
         }
         return $class;
     }
 
-    public function getAction(){
+    public function getAction()
+    {
         $action['action'] = $this->rm->getName();
-        foreach ($this->func as $markName => $markKeys){
-            $action[$markName] = $this->analyse->get($markName,$markKeys);
+        foreach ($this->func as $markName => $markKeys) {
+            $action[$markName] = $this->analyse->get($markName, $markKeys);
         }
         return $action;
     }

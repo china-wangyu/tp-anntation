@@ -16,12 +16,12 @@ class Exception extends \Exception
     public function __construct($message = "", $code = 0, Throwable $previous = null)
     {
         parent::__construct(
-            $this->getUserCode().': '. sprintf($this->message,$message,$this->getFile(),$this->getLine()),
+            $this->getUserCode() . ': ' . sprintf($this->message, $message, $this->getFile(), $this->getLine()),
             $code,
             $previous);
     }
 
-    public function getUserCode():int
+    public function getUserCode(): int
     {
         return $this->user_code ?? 1000;
     }

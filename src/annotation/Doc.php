@@ -32,6 +32,8 @@ class Doc
      */
     protected $ds = PHP_EOL . PHP_EOL;
 
+
+
     /**
      * Doc constructor.
      * @param string $module 模块名称
@@ -106,18 +108,21 @@ class Doc
         try {
             foreach ($this->apis as $api) {
                 $this->dp = '- ';
-                $content .= $this->formatToc(Helper::substr($api['class']['class']) . ':' .
-                    Helper::substr($api['class']['doc']));
+                $content .= $this->formatToc(
+                    Helper::substr($api['class']['class']) . ':' .
+                    Helper::substr(empty($api['class']['doc']) ? '' : $api['class']['doc'])
+                );
                 foreach ($api['actions'] as $action) {
                     $this->dp = '   - ';
                     $this->ds = PHP_EOL;
-                    $content .= $this->formatToc(Helper::substr($action['action']) . ':' .
-                        Helper::substr($action['doc']));
+                    $content .= $this->formatToc(
+                        Helper::substr($action['action']) . ':' .
+                        Helper::substr(empty($action['doc']) ? '' : $action['doc'])
+                    );
                 }
             }
             $this->write($this->file, $content);
         } catch (\Exception $exception) {
-
             throw new \Exception($exception->getMessage());
         }
     }
@@ -134,8 +139,10 @@ class Doc
             $content = $this->format(' API文档内容');
             foreach ($this->apis as $api) {
                 $this->dp = '- ';
-                $content .= $this->formatToc(Helper::substr($api['class']['class']) . ':' .
-                    Helper::substr($api['class']['doc'] ?? ''));
+                $content .= $this->formatToc(
+                    Helper::substr($api['class']['class']) . ':' .
+                    Helper::substr(empty($api['class']['doc']) ? '' : $api['class']['doc'])
+                );
                 foreach ($api['actions'] as $action) {
                     $content .= $this->writeAction($api, $action);
                 }
@@ -156,17 +163,23 @@ class Doc
     {
         try {
             $this->dp = '### ';
-            $content = $this->writeDoc($action['action'], $action['doc']);
+            $content = $this->writeDoc(
+                $action['action'],
+                empty($action['doc']) ? '' : $action['doc']
+            );
             $this->dp = '- ';
-            $content .= $this->writeUrl($api['class']['group'] ?? '', $action['route']['rule'] ?? '');
-            $content .= $this->writeMethod($action['route']['method']);
+            $content .= $this->writeUrl(
+                empty($api['class']['group']) ? '' : $api['class']['group'],
+                empty($action['route']['rule']) ? '' : $action['route']['rule']
+            );
+            $content .= $this->writeMethod(empty($action['route']['method']) ? '*' : $action['route']['method']);
             $content .= $this->writeParam($action['param']);
             $content .= $this->writeSuccess($action['success']);
             $content .= $this->writeError($action['error']);
             $this->ds = PHP_EOL . PHP_EOL;
             return $content;
         } catch (\Exception $exception) {
-            throw new \Exception($exception->getMessage());
+            throw new \Exception($api['class']['class'].' . '.$action['action'].' . '.$exception->getMessage());
         }
     }
 
@@ -179,7 +192,10 @@ class Doc
     // 写方法URL
     protected function writeUrl($route, $rule)
     {
-        return $this->format('[url] : `/' . $route . '/' . $rule . '`');
+        return $this->format('[url] : `'.
+            (empty($route) ? '' :   '/' . $route ).
+            (empty($rule) ? '`' : '/' . $rule . '`')
+        );
     }
 
     // 写方法请求类型
@@ -191,20 +207,24 @@ class Doc
     // 写方法请求参数
     protected function writeParam($params)
     {
-        $content = $this->format('[params] : `请求参数文档`');
-        $this->dp = '';
-        $this->ds = PHP_EOL;
-        $content .= $this->format('| 参数名称 | 参数文档 | 参数 `filter` | 参数默认 |');
-        $content .= $this->format('| :----: | :----: | :----: | :----: |');
-        foreach ($params as $param) {
-            $content .= $this->format(
-                '| ' . $param['name'] .
-                ' | ' . $param['doc'] . ' | ' .
-                str_replace('|', '#', $param['rule']) .
-                ' | ' . $param['default'] . ' |'
-            );
+        try{
+            $content = $this->format('[params] : `请求参数文档`');
+            $this->dp = '';
+            $this->ds = PHP_EOL;
+            $content .= $this->format('| 参数名称 | 参数文档 | 参数 `filter` | 参数默认 |');
+            $content .= $this->format('| :----: | :----: | :----: | :----: |');
+            foreach ($params as $param) {
+                $content .= $this->format(
+                    '| ' . $param['name'] .
+                    ' | ' . $param['doc'] . ' | ' .
+                    str_replace('|', '#', $param['rule']) .
+                    ' | ' . $param['default'] . ' |'
+                );
+            }
+            return $content;
+        }catch (\Exception $exception){
+            throw new \Exception('@param()注解函数内容有误请检查 . 报错原因：'.$exception->getMessage());
         }
-        return $content;
     }
 
     // 写方法错误返回

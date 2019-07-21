@@ -32,13 +32,13 @@ class DocCommand extends \think\console\Command
     /**
      * @var string $ds 默认文档后缀
      */
-    protected $ds = PHP_EOL.PHP_EOL;
+    protected $ds = PHP_EOL . PHP_EOL;
 
     protected function configure()
     {
         $this->setName('doc:build')
-            ->addArgument('module', Argument::OPTIONAL, "your API Folder,Examples: api = /application/api",'api')
-            ->addArgument('filename', Argument::OPTIONAL, "your API to markdown filename",'api-md')
+            ->addArgument('module', Argument::OPTIONAL, "your API Folder,Examples: api = /application/api", 'api')
+            ->addArgument('filename', Argument::OPTIONAL, "your API to markdown filename", 'api-md')
             ->addArgument('force', Argument::OPTIONAL, "your API markdown filename is exist, backup and create", true)
             ->setDescription('API to Markdown');
     }
@@ -51,12 +51,12 @@ class DocCommand extends \think\console\Command
      */
     protected function execute(Input $input, Output $output)
     {
-        try{
-            $doc = new Doc($input->getArgument('module'),$input->getArgument('filename'),$input->getArgument('force'));
+        try {
+            $doc = new Doc($input->getArgument('module'), $input->getArgument('filename'), $input->getArgument('force'));
             $doc->execute();
             $output->writeln("Successful. Output Document Successful . File Path ：$doc->file ");
-        }catch (\Exception $exception){
-            $output->writeln("Error. Output Document Failed . error msg: ".$exception->getMessage());
+        } catch (\Exception $exception) {
+            $output->writeln("Error. Output Document Failed . error msg: " . $exception->getMessage());
         }
     }
 }

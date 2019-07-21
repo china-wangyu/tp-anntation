@@ -16,20 +16,21 @@ trait Helper
      * @return array
      * @throws \Exception
      */
-    static function getMethods($object){
-        try{
+    static function getMethods($object)
+    {
+        try {
             if (!is_object($object)) throw new \Exception('$object 参数期望的值为 object 类型');
             $parentActions = get_class_methods(get_parent_class($object));
             $objectActions = get_class_methods($object);
             if (empty($parentActions)) return $objectActions;
             $actions = array_diff($objectActions, $parentActions);
-            foreach ($actions as $key => $action){
-                if (strstr($action,'__') !== false) {
+            foreach ($actions as $key => $action) {
+                if (strstr($action, '__') !== false) {
                     unset($actions[$key]);
                 }
             }
             return empty($actions) ? [] : array_values($actions);
-        }catch (\Exception $exception){
+        } catch (\Exception $exception) {
             throw new UtilException($exception->getMessage());
         }
     }
@@ -42,9 +43,9 @@ trait Helper
      */
     static function getApiAnnotation(string $module)
     {
-        $apiFiles = Dir::getFiles(env('APP_PATH').'/'.$module.'/'.config('url_controller_layer'));
+        $apiFiles = Dir::getFiles(env('APP_PATH') . '/' . $module . '/' . config('url_controller_layer'));
         $apiAnnotations = new ApiAnnotation($apiFiles);
-        foreach ($apiAnnotations->data as $api){
+        foreach ($apiAnnotations->data as $api) {
             yield $api;
         }
     }
@@ -56,8 +57,8 @@ trait Helper
      * @param int $number
      * @return string
      */
-    public static function substr($content,int $start = 0, int $number = 40)
+    public static function substr($content, int $start = 0, int $number = 40)
     {
-        return strtolower(substr(str_replace(' ','.',trim($content)),$start,$number));
+        return strtolower(substr(str_replace(' ', '.', trim($content)), $start, $number));
     }
 }

@@ -5,6 +5,7 @@
 namespace WangYu\annotation;
 
 use WangYu\exception\annotation\AnnotationException;
+use WangYu\exception\validate\ValidateException;
 use WangYu\utils\Dir;
 use WangYu\utils\File;
 
@@ -34,14 +35,19 @@ class Validate
      */
     public function handle(\think\Request $request, \Closure $next)
     {
-        $this->request = $request;
-        $this->setAnnotation();
-        $this->setRule();
-        $res = $this->goCheck();
-        if (!$res) {
-            throw new \Exception('参数验证 .   '.join(',',$this->rule->getError()));
+        try{
+            $this->request = $request;
+            $this->setAnnotation();
+            $this->setRule();
+            $res = $this->goCheck();
+            if (!$res) {
+                throw new \Exception('参数验证 .   '.join(',',$this->rule->getError()));
+            }
+            return $next($request);
+        }catch (\Exception $exception){
+            throw new ValidateException($exception->getMessage());
         }
-        return $next($request);
+
     }
 
     /**
