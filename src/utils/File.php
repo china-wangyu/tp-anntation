@@ -63,8 +63,8 @@ trait File
     {
         try {
             if (is_file($file)) {
-                $newFile = dirname($file) . '\backup-' . date('YmdHis') . '-' . basename($file);
-                if (!copy($file, $newFile)) throw new \Exception('备份文件失败~');
+                $newFile = env('ROOT_PATH') . 'backup-' . date('YmdHis') . '-' . basename($file);
+                if (!rename($file, $newFile)) throw new \Exception('备份文件失败~');
             }
         } catch (\Exception $exception) {
             throw new \Exception('备份文件失败~');

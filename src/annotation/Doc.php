@@ -138,7 +138,7 @@ class Doc
             $this->dp = '# ';
             $content = $this->format(' API文档内容');
             foreach ($this->apis as $api) {
-                $this->dp = '- ';
+                $this->dp = '## ';
                 $content .= $this->formatToc(
                     Helper::substr($api['class']['class']) . ':' .
                     Helper::substr(empty($api['class']['doc']) ? '' : $api['class']['doc'])
@@ -211,11 +211,11 @@ class Doc
             $content = $this->format('[params] : `请求参数文档`');
             $this->dp = '';
             $this->ds = PHP_EOL;
-            $content .= $this->format('| 参数名称 | 参数文档 | 参数 `filter` | 参数默认 |');
-            $content .= $this->format('| :----: | :----: | :----: | :----: |');
+            $content .= $this->format('   | 参数名称 | 参数文档 | 参数 `filter` | 参数默认 |');
+            $content .= $this->format('   | :----: | :----: | :----: | :----: |');
             foreach ($params as $param) {
                 $content .= $this->format(
-                    '| ' . $param['name'] .
+                    '   | ' . $param['name'] .
                     ' | ' . $param['doc'] . ' | ' .
                     str_replace('|', '#', $param['rule']) .
                     ' | ' . $param['default'] . ' |'
@@ -232,7 +232,7 @@ class Doc
     {
         $json = empty($json) ? '' : $json;
         $content = $this->format('- [error] : `错误返回样例`');
-        $content .= $this->format('```json5' . PHP_EOL . $json . PHP_EOL . '```');
+        $content .= $this->format('   ```json5' . PHP_EOL .'    '. $json . PHP_EOL . '   ```');
         return $content;
     }
 
@@ -241,7 +241,7 @@ class Doc
     {
         $json = empty($json) ? '' : $json;
         $content = $this->format('- [success] : `成功返回样例`');
-        $content .= $this->format('```json5' . PHP_EOL . $json . PHP_EOL . '```');
+        $content .= $this->format('   ```json5' . PHP_EOL .'    '. $json . PHP_EOL . '   ```');
         return $content;
     }
 
