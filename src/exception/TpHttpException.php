@@ -29,7 +29,8 @@ class TpHttpException extends Handle
                 $result = $this->output(
                     $e->getMessage(),
                     method_exists($e, 'getUserCode') ? $e->getUserCode() : 1000,
-                    $e->getCode());
+                    empty($e->getCode()) ? 500 : $e->getCode()
+                );
                 $this->recordErrorLog($e);
             }
         } catch (\Exception $exception) {
