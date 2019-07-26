@@ -104,7 +104,8 @@ class Doc
      */
     protected function writeToc(): void
     {
-        $content = $this->format(' API文档目录');
+        $content = $this->format(' API Markdown 文档，源于[TRR](https://github.com/china-wangyu/TRR)的美好生活。');
+        $content .= $this->format('# `TOC`目录');
         try {
             foreach ($this->apis as $api) {
                 $this->dp = '- ';
@@ -114,7 +115,6 @@ class Doc
                 );
                 foreach ($api['actions'] as $action) {
                     $this->dp = '   - ';
-                    $this->ds = PHP_EOL;
                     $content .= $this->formatToc(
                         Helper::substr($action['action']) . ':' .
                         Helper::substr(empty($action['doc']) ? '' : $action['doc'])
@@ -134,11 +134,10 @@ class Doc
     protected function writeApi(): void
     {
         try {
-            $this->ds = PHP_EOL . PHP_EOL;
-            $this->dp = '# ';
-            $content = $this->format(' API文档内容');
+            $this->dp = '## ';
+            $content = $this->format(' `API`内容');
             foreach ($this->apis as $api) {
-                $this->dp = '## ';
+                $this->dp = '### ';
                 $content .= $this->formatToc(
                     Helper::substr($api['class']['class']) . ':' .
                     Helper::substr(empty($api['class']['doc']) ? '' : $api['class']['doc'])
@@ -162,7 +161,7 @@ class Doc
     protected function writeAction(array $api, array $action = []): string
     {
         try {
-            $this->dp = '### ';
+            $this->dp = '#### ';
             $content = $this->writeDoc(
                 $action['action'],
                 empty($action['doc']) ? '' : $action['doc']
@@ -176,7 +175,6 @@ class Doc
             $content .= $this->writeParam($action['param']);
             $content .= $this->writeSuccess($action['success']);
             $content .= $this->writeError($action['error']);
-            $this->ds = PHP_EOL . PHP_EOL;
             return $content;
         } catch (\Exception $exception) {
             throw new \Exception($api['class']['class'].' . '.$action['action'].' . '.$exception->getMessage());
@@ -221,6 +219,7 @@ class Doc
                     ' | ' . $param['default'] . ' |'
                 );
             }
+            $this->ds = PHP_EOL . PHP_EOL;
             return $content;
         }catch (\Exception $exception){
             throw new \Exception('@param()注解函数内容有误请检查 . 报错原因：'.$exception->getMessage());
