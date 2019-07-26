@@ -48,7 +48,7 @@ class TpHttpException extends Handle
     private function output(string $msg = '服務器內部錯誤，不想告訴你', int $user_code = 1000, int $code = 500)
     {
         return [
-            'code' => $user_code ?? 500,
+            'code' => $code ?? 500,
             'message' => $msg ?? '服務器內部錯誤，不想告訴你',
             'request_url' => request()->path() ?? ''
         ];
