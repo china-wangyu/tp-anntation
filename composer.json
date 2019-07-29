@@ -1,6 +1,6 @@
 {
   "name": "wangyu/tp-anntation",
-  "description": "ThinkPHP5 的简易注解扩展，含注解路由（支持路由分组），注解参数验证（支持验证器和参数验证），注解Api文档生成等功能",
+  "description": "ThinkPHP5 的简易注解扩展，含注解路由（支持路由分组），注解参数验证（支持验证器和参数验证），注解Api文档生成等功能, 依赖`wangyu/tp-anntation`的框架[`TRR`](https://github.com/china-wangyu/TRR)",
   "authors": [
     {
       "name": "wangyu",
