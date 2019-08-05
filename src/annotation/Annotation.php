@@ -99,4 +99,15 @@ final class Annotation
         }
         return $action;
     }
+
+    /**
+     * 获取自定义注解内容
+     * @param string $func 注解函数名称
+     * @param mixed $keys 注解函数的解析规则，例如字符串 rule ,例如数组 ['rule','module','show']
+     * @return array
+     * @throws \Exception
+     */
+    public function get(string $func, $keys){
+        return $this->analyse->get($func, $keys);
+    }
 }
