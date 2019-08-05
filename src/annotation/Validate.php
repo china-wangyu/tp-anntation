@@ -40,10 +40,12 @@ class Validate
         try{
             $this->request = $request;
             $this->setAnnotation();
-            $this->setRule();
-            $res = $this->goCheck();
-            if (!$res) {
-                throw new \Exception('参数验证 .   '.join(',',$this->rule->getError()));
+            if (!empty($this->annotation['param']) and !empty($this->annotation['validate'])){
+                $this->setRule();
+                $res = $this->goCheck();
+                if (!$res) {
+                    throw new \Exception('参数验证 .   '.join(',',$this->rule->getError()));
+                }
             }
             return $next($request);
         }catch (\Exception $exception){
