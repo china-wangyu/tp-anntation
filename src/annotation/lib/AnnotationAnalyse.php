@@ -107,6 +107,7 @@ class AnnotationAnalyse
     private function toArray()
     {
         try {
+            if (!is_string($this->data))return;
             $this->data = array_filter(explode($this->mark, trim($this->data)));
         } catch (\Exception $exception) {
             throw new AnnotationException('@step2.字符串转数组.' . $exception->getMessage());
@@ -120,6 +121,7 @@ class AnnotationAnalyse
     private function regular()
     {
         try {
+            if (empty($this->data) or !is_array($this->data))return;
             $argc = [];
             $match = sprintf($this->match, $this->func, $this->delimiter);
             foreach ($this->data as $item) {
