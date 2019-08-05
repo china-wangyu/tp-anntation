@@ -58,6 +58,7 @@ class Route extends Router
             if (empty($api)) return;
             foreach ($api['actions'] as $key => $action) {
                 if (empty($api['class']['group']) and empty($api['actions']['rule'])) continue;
+
                 $this->set(
                     $this->setActionRule($api['class']['group'], $action['route']['rule']),
                     $this->setActionRoute($api['class']['class'], $action['action']),
@@ -82,14 +83,14 @@ class Route extends Router
     {
         try {
             // 设置类中间件
-            if (!empty($clsMiddleware)) {
-                return empty($routeMiddleware) ? $clsMiddleware : array_merge($clsMiddleware, $routeMiddleware);
+            if (!empty($clsMiddleware)){
+                $routeMiddleware = empty($routeMiddleware) ? $clsMiddleware : array_merge($clsMiddleware, $routeMiddleware);
             }
             // 设置方法中间件
             if (!empty($funcMiddleware)) {
-                return empty($routeMiddleware) ? $funcMiddleware : array_merge($funcMiddleware, $routeMiddleware);
+                $routeMiddleware = empty($routeMiddleware) ? $funcMiddleware : array_merge($funcMiddleware, $routeMiddleware);
             }
-            return [];
+            return $routeMiddleware;
         } catch (\Exception $exception) {
             throw new \Exception($exception->getMessage());
         }
