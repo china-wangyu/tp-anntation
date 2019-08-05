@@ -86,7 +86,7 @@ final class Annotation
     {
         $class['class'] = $this->rc->getName();
         foreach ($this->cls as $markName => $markKeys) {
-            $class[$markName] = $this->analyse->get($markName, $markKeys);
+            $class[$markName] = $this->get($markName, $markKeys);
         }
         return $class;
     }
@@ -95,7 +95,7 @@ final class Annotation
     {
         $action['action'] = $this->rm->getName();
         foreach ($this->func as $markName => $markKeys) {
-            $action[$markName] = $this->analyse->get($markName, $markKeys);
+            $action[$markName] = $this->get($markName, $markKeys);
         }
         return $action;
     }
