@@ -24,6 +24,8 @@ class Validate
 
     protected $rule;
 
+    protected $scene;
+
     protected $field;
 
     /**
@@ -76,6 +78,7 @@ class Validate
     protected function setValidateRule(){
         try{
             $validateFileMaps = Dir::getFiles($this->getValidateRootPath());
+            $this->setValidateScene();
             $validateFile = File::screen($validateFileMaps,$this->request->controller().'.'.$this->annotation['validate']);
             $this->rule = File::getObject($validateFile);
             if ($this->rule == '') throw new \Exception("注解验证器错误. @validate('$this->annotation['validate']')不存在");
@@ -84,6 +87,13 @@ class Validate
         }
     }
 
+    protected function setValidateScene(){
+        if (strstr($this->annotation['validate'],'.')){
+            $validateArr = explode('.',$this->annotation['validate']);
+            $this->scene = $validateArr[1] ?? null;
+            $this->annotation['validate'] = $validateArr[0];
+        }
+    }
 
     protected function getValidateRootPath(){
         $config_path = config('validate_dir');
@@ -110,7 +120,11 @@ class Validate
                 $this->rule = (new \think\Validate())->make($this->rule,[],$this->field);
             }
             if ($this->rule instanceof  \think\Validate){
-                return $this->rule->batch()->check($this->request->param());
+                if (empty($this->scene)){
+                    return $this->rule->batch()->check($this->request->param());
+                }else{
+                    return $this->rule->scene($this->scene)->batch()->check($this->request->param());
+                }
             }
             return true;
         }catch (\Exception $exception){
