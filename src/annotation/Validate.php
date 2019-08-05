@@ -47,6 +47,7 @@ class Validate
             }
             return $next($request);
         }catch (\Exception $exception){
+
             throw new ValidateException($exception->getMessage());
         }
 
@@ -102,11 +103,17 @@ class Validate
 
     protected function setParamRule(){
         try{
-            foreach ($this->annotation['param'] as $item){
-                if(empty($item['rule'])) continue;
-                $this->field[$item['name']] = $item['doc'];
-                $this->rule[$item['name']] = $item['rule'];
+            if (isset($this->annotation['param'][0])){
+                foreach ($this->annotation['param'] as $item){
+                    if(empty($item['rule'])) continue;
+                    $this->field[$item['name']] = $item['doc'];
+                    $this->rule[$item['name']] = $item['rule'];
+                }
+            }else{
+                $this->field[$this->annotation['param']['name']] = $this->annotation['param']['doc'];
+                $this->rule[$this->annotation['param']['name']] = $this->annotation['param']['rule'];
             }
+
         }catch (\Exception $exception){
             throw new \Exception($exception->getMessage());
         }
