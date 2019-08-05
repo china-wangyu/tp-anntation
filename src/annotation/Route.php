@@ -57,6 +57,7 @@ class Route extends Router
         try {
             if (empty($api)) return;
             foreach ($api['actions'] as $key => $action) {
+                if (empty($api['class']['group']) and empty($api['actions']['rule'])) continue;
                 $this->set(
                     $this->setActionRule($api['class']['group'], $action['route']['rule']),
                     $this->setActionRoute($api['class']['class'], $action['action']),
