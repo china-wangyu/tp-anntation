@@ -9,5 +9,5 @@ use WangYu\exception\Exception;
 
 class AnnotationException extends Exception
 {
-    protected $user_code = 2000;
+    protected $user_code = 1002;
 }

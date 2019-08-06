@@ -9,5 +9,5 @@ use WangYu\exception\Exception;
 
 class UtilException extends Exception
 {
-    protected $user_code = 9000; // 工具箱报错code，从9000起
+    protected $user_code = 1003; // 工具箱报错code，从9000起
 }

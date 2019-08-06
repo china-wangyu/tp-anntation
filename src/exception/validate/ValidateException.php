@@ -9,5 +9,5 @@ use WangYu\exception\Exception;
 
 class ValidateException extends Exception
 {
-    protected $user_code = 3000;
+    protected $user_code = 1001;
 }
