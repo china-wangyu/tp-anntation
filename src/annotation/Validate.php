@@ -37,21 +37,17 @@ class Validate
      */
     public function handle(\think\Request $request, \Closure $next)
     {
-        try{
-            $this->request = $request;
-            $this->setAnnotation();
-            if (!empty($this->annotation['param']) and !empty($this->annotation['validate'])){
-                $this->setRule();
-                $res = $this->goCheck();
-                if (!$res) {
-                    throw new \Exception('参数验证 .   '.join(',',$this->rule->getError()));
-                }
-            }
-            return $next($request);
-        }catch (\Exception $exception){
+        $this->request = $request;
+        $this->setAnnotation();
+        if (!empty($this->annotation['param']) or !empty($this->annotation['validate'])){
+            $this->setRule();
+            $res = $this->goCheck();
 
-            throw new ValidateException($exception->getMessage());
+            if (!$res) {
+                throw new ValidateException('参数验证 .   '.join(',',$this->rule->getError()));
+            }
         }
+        return $next($request);
 
     }
 
