@@ -50,7 +50,7 @@ class Doc
                 array_push($this->apis, $item);
             }
         } catch (\Exception $exception) {
-            throw new AnnotationException(['message' => '初始化数据失败~，' . $exception->getMessage()]);
+            throw new AnnotationException( '初始化数据失败~，' . $exception->getMessage());
         }
     }
 
@@ -64,7 +64,7 @@ class Doc
             $this->writeToc();
             $this->writeApi();
         } catch (\Exception $exception) {
-            throw new AnnotationException(['message' => '生成文档失败~，' . $exception->getMessage()]);
+            throw new AnnotationException('生成文档失败~，' . $exception->getMessage());
         }
     }
 
