@@ -1,28 +1,17 @@
 <?php
-/**
- * Created by User: wene<china_wangyu@aliyun.com> Date: 2019/7/1
- */
+/** Created by 嗝嗝<china_wangyu@aliyun.com>. Date:   */
 
-namespace WangYu\annotation;
+namespace WangYu\annotation\lib;
+
 
 use WangYu\exception\annotation\AnnotationException;
 use WangYu\utils\File;
 use WangYu\utils\Helper;
 
-/**
- * Class Doc API文档生成
- * @package WangYu
- */
-class Doc
+class DocMarkdown extends Doc
 {
-    /**
-     * @var string $file 文件
-     */
-    public $file = '';
-    /**
-     * @var array $apis API反射数据
-     */
-    public $apis = [];
+    protected $file_extension = '.md';
+    
     /**
      * @var string $ds 默认文档前缀
      */
@@ -32,70 +21,16 @@ class Doc
      */
     protected $ds = PHP_EOL . PHP_EOL;
 
-
-    /**
-     * Doc constructor.
-     * @param string $module 模块名称
-     * @param string $filename 文档名称
-     * @param bool $force 新建文件,如果存在，默认会更改以前的名称，然后根据文件的时间生成文件备份
-     * @throws AnnotationException
-     */
-    public function __construct(string $module = 'api', string $filename = 'api-md', bool $force = true)
+    protected function getFilePath()
     {
-        try {
-            $this->setFilename($filename);
-            $this->backupFile($force);
-            foreach (Helper::getApiAnnotation($module) as $item) {
-                array_push($this->apis, $item);
-            }
-        } catch (\Exception $exception) {
-            throw new AnnotationException('初始化数据失败~，' . $exception->getMessage());
-        }
+        // TODO: Implement getFilePath() method.
     }
-
-    /**
-     * 执行
-     * @throws AnnotationException
-     */
-    public function execute()
+    
+    protected function writeHeader()
     {
-        try {
-            $this->writeToc();
-            $this->writeApi();
-        } catch (\Exception $exception) {
-            throw new AnnotationException('生成文档失败~，' . $exception->getMessage());
-        }
-    }
-
-    /**
-     * 设置文件名
-     * @param string|null $name
-     */
-    protected function setFilename(string $name = null): void
-    {
-        $name = trim($name);
-        $name = $name ?: 'api-md-' . date('YmdHis');
-        $this->file = env('ROOT_PATH') . $name . '.md';
-    }
-
-    /**
-     * 是否备份文件
-     * @param bool $bool
-     * @throws \Exception
-     */
-    protected function backupFile(bool $bool = true): void
-    {
-        $bool && File::backupFile($this->file);
-    }
-
-    /**
-     * 写入数据
-     * @param string $file 文件路径
-     * @param string $content
-     */
-    protected function write(string $file, string $content): void
-    {
-        File::write($file, $content);
+        // TODO: Implement writeHeader() method.
+        $content = $this->format(' API Markdown 文档，源于[TRR](https://github.com/china-wangyu/TRR)的美好生活。');
+        $this->write($this->file, $content);
     }
 
     /**
@@ -103,8 +38,7 @@ class Doc
      */
     protected function writeToc(): void
     {
-        $content = $this->format(' API Markdown 文档，源于[TRR](https://github.com/china-wangyu/TRR)的美好生活。');
-        $content .= $this->format('# `TOC`目录');
+        $content = $this->format('# `TOC`目录');
         try {
             foreach ($this->apis as $api) {
                 $this->dp = '- ';
@@ -149,6 +83,12 @@ class Doc
         } catch (\Exception $exception) {
             throw new \Exception($exception->getMessage());
         }
+    }
+
+    protected function writeFooter()
+    {
+        $content = $this->format(' 感谢🙏使用[TRR](https://github.com/china-wangyu/TRR)，祝你生活美满～');
+        $this->write($this->file, $content);
     }
 
     /**

@@ -10,6 +10,8 @@ use think\console\input\Argument;
 use think\console\input\Option;
 use think\console\Output;
 use think\Exception;
+use WangYu\annotation\lib\DocHtml;
+use WangYu\utils\Helper;
 
 /**
  * Class Command tp命令行模式，输出API文档
@@ -38,6 +40,7 @@ class DocCommand extends \think\console\Command
     {
         $this->setName('doc:build')
             ->addArgument('module', Argument::OPTIONAL, "your API Folder,Examples: api = /application/api", 'api')
+            ->addArgument('type', Argument::OPTIONAL, "your API file type,type = html or markdown", 'html')
             ->addArgument('filename', Argument::OPTIONAL, "your API to markdown filename", 'api-md')
             ->addArgument('force', Argument::OPTIONAL, "your API markdown filename is exist, backup and create", true)
             ->setDescription('API to Markdown');
@@ -52,7 +55,12 @@ class DocCommand extends \think\console\Command
     protected function execute(Input $input, Output $output)
     {
         try {
-            $doc = new Doc($input->getArgument('module'), $input->getArgument('filename'), $input->getArgument('force'));
+            $apis = [];
+            foreach(Helper::getApiAnnotation($input->getArgument('module')) as $item){
+                array_push($apis,$item);
+            }
+            $className = '\WangYu\annotation\lib\Doc'.ucfirst($input->getArgument('type'));
+            $doc = new $className($input->getArgument('filename'),$apis,$input->getArgument('force'));
             $doc->execute();
             $output->writeln("Successful. Output Document Successful . File Path ：$doc->file ");
         } catch (\Exception $exception) {
