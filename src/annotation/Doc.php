@@ -33,7 +33,6 @@ class Doc
     protected $ds = PHP_EOL . PHP_EOL;
 
 
-
     /**
      * Doc constructor.
      * @param string $module 模块名称
@@ -50,7 +49,7 @@ class Doc
                 array_push($this->apis, $item);
             }
         } catch (\Exception $exception) {
-            throw new AnnotationException( '初始化数据失败~，' . $exception->getMessage());
+            throw new AnnotationException('初始化数据失败~，' . $exception->getMessage());
         }
     }
 
@@ -177,7 +176,7 @@ class Doc
             $content .= $this->writeError($action['error']);
             return $content;
         } catch (\Exception $exception) {
-            throw new \Exception($api['class']['class'].' . '.$action['action'].' . '.$exception->getMessage());
+            throw new \Exception($api['class']['class'] . ' . ' . $action['action'] . ' . ' . $exception->getMessage());
         }
     }
 
@@ -190,8 +189,8 @@ class Doc
     // 写方法URL
     protected function writeUrl($route, $rule)
     {
-        return $this->format('[url] : `'.
-            (empty($route) ? '' :   '/' . $route ).
+        return $this->format('[url] : `' .
+            (empty($route) ? '' : '/' . $route) .
             (empty($rule) ? '`' : '/' . $rule . '`')
         );
     }
@@ -205,24 +204,33 @@ class Doc
     // 写方法请求参数
     protected function writeParam($params)
     {
-        try{
+        try {
             $content = $this->format('[params] : `请求参数文档`');
             $this->dp = '';
             $this->ds = PHP_EOL;
             $content .= $this->format('   | 参数名称 | 参数文档 | 参数 `filter` | 参数默认 |');
             $content .= $this->format('   | :----: | :----: | :----: | :----: |');
-            foreach ($params as $param) {
+            if (is_array($params) and isset($params[0])){
+                foreach ($params as $param) {
+                    $content .= $this->format(
+                        '   | ' . $param['name'] .
+                        ' | ' . $param['doc'] . ' | ' .
+                        str_replace('|', '#', $param['rule']) .
+                        ' | ' . $param['default'] . ' |'
+                    );
+                }
+            }else if(is_array($params) and !empty($params)){
                 $content .= $this->format(
-                    '   | ' . $param['name'] .
-                    ' | ' . $param['doc'] . ' | ' .
-                    str_replace('|', '#', $param['rule']) .
-                    ' | ' . $param['default'] . ' |'
+                    '   | ' . $params['name'] .
+                    ' | ' . $params['doc'] . ' | ' .
+                    str_replace('|', '#', $params['rule']) .
+                    ' | ' . $params['default'] . ' |'
                 );
             }
             $this->ds = PHP_EOL . PHP_EOL;
             return $content;
-        }catch (\Exception $exception){
-            throw new \Exception('@param()注解函数内容有误请检查 . 报错原因：'.$exception->getMessage());
+        } catch (\Exception $exception) {
+            throw new \Exception('@param()注解函数内容有误请检查 . 报错原因：' . $exception->getMessage());
         }
     }
 
@@ -231,7 +239,7 @@ class Doc
     {
         $json = empty($json) ? '' : $json;
         $content = $this->format('- [error] : `错误返回样例`');
-        $content .= $this->format('   ```json5' . PHP_EOL .'    '. $json . PHP_EOL . '   ```');
+        $content .= $this->format('   ```json5' . PHP_EOL . '    ' . $json . PHP_EOL . '   ```');
         return $content;
     }
 
@@ -240,7 +248,7 @@ class Doc
     {
         $json = empty($json) ? '' : $json;
         $content = $this->format('- [success] : `成功返回样例`');
-        $content .= $this->format('   ```json5' . PHP_EOL .'    '. $json . PHP_EOL . '   ```');
+        $content .= $this->format('   ```json5' . PHP_EOL . '    ' . $json . PHP_EOL . '   ```');
         return $content;
     }
 
