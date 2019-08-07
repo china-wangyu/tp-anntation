@@ -36,7 +36,7 @@ class TpHttpException extends Handle
         } catch (\Exception $exception) {
             $result = $this->output($exception->getMessage(), 10000);
         }
-        return json($result, $result['code'] ?? 500);
+        return json($result, empty($e->getCode()) ? 500 : $e->getCode());
     }
 
     /**
@@ -49,7 +49,7 @@ class TpHttpException extends Handle
     private function output(string $msg = '服務器內部錯誤，不想告訴你', int $user_code = 1000, int $code = 500)
     {
         return [
-            'code' => $code ?? 500,
+            'code' => $user_code ?? 1000,
             'message' => $msg ?? '服務器內部錯誤，不想告訴你',
             'request_url' => request()->path() ?? ''
         ];
