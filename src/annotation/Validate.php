@@ -44,7 +44,7 @@ class Validate
             $res = $this->goCheck();
 
             if (!$res) {
-                throw new ValidateException('参数验证 .   '.join(',',$this->rule->getError()));
+                throw new ValidateException(join(',',$this->rule->getError()));
             }
         }
         return $next($request);
