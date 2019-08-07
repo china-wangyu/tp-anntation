@@ -108,6 +108,7 @@ class Validate
                     $this->rule[$item['name']] = $item['rule'];
                 }
             }else{
+                if(empty($this->annotation['param'])) return;
                 $this->field[$this->annotation['param']['name']] = $this->annotation['param']['doc'];
                 $this->rule[$this->annotation['param']['name']] = $this->annotation['param']['rule'];
             }
