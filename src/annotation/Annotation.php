@@ -107,7 +107,7 @@ final class Annotation
      * @return array
      * @throws \Exception
      */
-    public function get(string $func, $keys){
+    public function get(string $func, $keys = null){
         return $this->analyse->get($func, $keys);
     }
 }
