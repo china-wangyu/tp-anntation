@@ -41,8 +41,8 @@ class DocCommand extends \think\console\Command
         $this->setName('doc:build')
             ->addOption('module',null, Option::VALUE_REQUIRED, "your API Folder,Examples: api = /application/api", 'api')
             ->addOption('type',null, Option::VALUE_REQUIRED, "your API file type,type = html or markdown", 'html')
-            ->addOption('name',null, Option::VALUE_REQUIRED, "your API to markdown filename", 'api-md')
-            ->addOption('force',null, Option::VALUE_REQUIRED, "your API markdown filename is exist, backup and create, force = true or false", true)
+            ->addOption('name',null, Option::VALUE_REQUIRED, "your API filename", 'api-doc')
+            ->addOption('force',null, Option::VALUE_REQUIRED, "your API filename is exist, backup and create, force = true or false", true)
             ->setDescription('Create API Doc');
     }
 
