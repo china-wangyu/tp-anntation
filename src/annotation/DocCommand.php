@@ -37,10 +37,10 @@ class DocCommand extends \think\console\Command
     protected function configure()
     {
         $this->setName('doc:build')
-            ->addArgument('module', Argument::OPTIONAL, "your API Folder,Examples: api = /application/api", 'api')
-            ->addArgument('filename', Argument::OPTIONAL, "your API to markdown filename", 'api-md')
-            ->addArgument('force', Argument::OPTIONAL, "your API markdown filename is exist, backup and create", true)
-            ->setDescription('API to Markdown');
+            ->addOption('module',null, Option::VALUE_REQUIRED, "your API Folder,Examples: api = /application/api", 'api')
+            ->addOption('name',null, Option::VALUE_REQUIRED, "your API to markdown filename", 'api-doc')
+            ->addOption('force',null, Option::VALUE_REQUIRED, "your API markdown filename is exist, backup and create, force = true or false", true)
+            ->setDescription('Create API Doc');
     }
 
     /**
@@ -52,7 +52,10 @@ class DocCommand extends \think\console\Command
     protected function execute(Input $input, Output $output)
     {
         try {
-            $doc = new Doc($input->getArgument('module'), $input->getArgument('filename'), $input->getArgument('force'));
+            $module = $input->getOption('module') ?? 'api';
+            $filename = $input->getOption('name') ?? 'api-doc';
+            $force = $input->getOption('force') ?? true;
+            $doc = new Doc($module, $filename, $force);
             $doc->execute();
             $output->writeln("Successful. Output Document Successful . File Path ：$doc->file ");
         } catch (\Exception $exception) {
