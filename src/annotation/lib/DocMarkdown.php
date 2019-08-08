@@ -29,7 +29,7 @@ class DocMarkdown extends Doc
     protected function writeHeader()
     {
         // TODO: Implement writeHeader() method.
-        $content = $this->format(' API Markdown 文档，源于[TRR](https://github.com/china-wangyu/TRR)的美好生活。');
+        $content = $this->format(' API Markdown 文档，源于[TRR](https://github.com/china-wangyu/TRR)的美好生活💑。');
         $this->write($this->file, $content);
     }
 

@@ -43,7 +43,7 @@ class DocHtml extends Doc
         $header .= $this->format('</style>');
         $header .= $this->format('</header>');
         $header .= $this->format('<body class=\'markdown-body\'>');
-        $header .= $this->format('<h1>API Markdown 文档，源于<a href="https://github.com/china-wangyu/TRR">TRR</a>的美好生活。</h1>');
+        $header .= $this->format('<h1>API Markdown 文档，源于<a href="https://github.com/china-wangyu/TRR">TRR</a>的美好生活💑。</h1>');
 
         $this->write($this->file,$header);
     }
