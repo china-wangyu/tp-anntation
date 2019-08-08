@@ -39,11 +39,11 @@ class DocCommand extends \think\console\Command
     protected function configure()
     {
         $this->setName('doc:build')
-            ->addArgument('module', Argument::OPTIONAL, "your API Folder,Examples: api = /application/api", 'api')
-            ->addArgument('type', Argument::OPTIONAL, "your API file type,type = html or markdown", 'html')
-            ->addArgument('filename', Argument::OPTIONAL, "your API to markdown filename", 'api-md')
-            ->addArgument('force', Argument::OPTIONAL, "your API markdown filename is exist, backup and create", true)
-            ->setDescription('API to Markdown');
+            ->addOption('module',null, Option::VALUE_REQUIRED, "your API Folder,Examples: api = /application/api", 'api')
+            ->addOption('type',null, Option::VALUE_REQUIRED, "your API file type,type = html or markdown", 'html')
+            ->addOption('name',null, Option::VALUE_REQUIRED, "your API to markdown filename", 'api-md')
+            ->addOption('force',null, Option::VALUE_REQUIRED, "your API markdown filename is exist, backup and create, force = true or false", true)
+            ->setDescription('Create API Doc');
     }
 
     /**
@@ -56,11 +56,15 @@ class DocCommand extends \think\console\Command
     {
         try {
             $apis = [];
-            foreach(Helper::getApiAnnotation($input->getArgument('module')) as $item){
+            $module = $input->getOption('module') ?? 'api';
+            $type = $input->getOption('type') ?? 'html';
+            $filename = $input->getOption('name') ?? 'api-doc';
+            $force = $input->getOption('force') ?? true;
+            foreach(Helper::getApiAnnotation($module) as $item){
                 array_push($apis,$item);
             }
-            $className = '\WangYu\annotation\lib\Doc'.ucfirst($input->getArgument('type'));
-            $doc = new $className($input->getArgument('filename'),$apis,$input->getArgument('force'));
+            $className = '\WangYu\annotation\lib\Doc'.ucfirst($type);
+            $doc = new $className($filename,$apis,$force);
             $doc->execute();
             $output->writeln("Successful. Output Document Successful . File Path ：$doc->file ");
         } catch (\Exception $exception) {
