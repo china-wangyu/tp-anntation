@@ -18,13 +18,15 @@ class DocHtml extends Doc
     protected function writeHeader()
     {
         header("Content-Type:text/html;charset=utf-8");
-        $header = '<html>
-                        <header>
-                            <meta name="viewport" content="width=device-width, initial-scale=1">
-                            <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-                            <meta http-equiv="content-language" content="zh-CN" />
-                            <link href="https://cdn.bootcss.com/github-markdown-css/3.0.1/github-markdown.css" rel="stylesheet">
-                            <style>
+        $header = $this->format( '<html>');
+        $header .= $this->format('<header>');
+        $header .= $this->format(' <meta name="viewport" content="width=device-width, initial-scale=1">');
+        $header .= $this->format('<meta http-equiv="content-type" content="text/html; charset=UTF-8" />');
+        $header .= $this->format('<meta http-equiv="content-language" content="zh-CN" />');
+        $header .= $this->format('<link href="https://cdn.bootcss.com/jquery-jsonview/1.2.3/jquery.jsonview.min.css" rel="stylesheet">');
+        $header .= $this->format('<link href="https://cdn.bootcss.com/github-markdown-css/3.0.1/github-markdown.css" rel="stylesheet">');
+        $header .= $this->format('<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>');
+        $header .= $this->format('<style>
                                 .markdown-body {
                                     box-sizing: border-box;
                                     min-width: 200px;
@@ -37,11 +39,12 @@ class DocHtml extends Doc
                                     .markdown-body {
                                         padding: 15px;
                                     }
-                                }
-                            </style>
-                        </header>
-                        <body class=\'markdown-body\'>
-                            <h1>API Markdown 文档，源于<a href="https://github.com/china-wangyu/TRR">TRR</a>的美好生活。</h1>';
+                                }');
+        $header .= $this->format('</style>');
+        $header .= $this->format('</header>');
+        $header .= $this->format('<body class=\'markdown-body\'>');
+        $header .= $this->format('<h1>API Markdown 文档，源于<a href="https://github.com/china-wangyu/TRR">TRR</a>的美好生活。</h1>');
+
         $this->write($this->file,$header);
     }
 
@@ -105,31 +108,23 @@ class DocHtml extends Doc
     protected function writeFooter()
     {
         $content = $this->format('<h1> 感谢🙏使用<a href="https://github.com/china-wangyu/TRR">TRR</a>，祝你生活美满～</h1>');
-        $content .= $this->format('<script>
-            function syntaxHighlight(json) {
-                json = json.replace(/&/g, \'&amp;\').replace(/</g, \'&lt;\').replace(/>/g, \'&gt;\');
-                return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
-                    var cls = \'number\';
-                    if (/^"/.test(match)) {
-                        if (/:$/.test(match)) {
-                            cls = \'key\';
-                        } else {
-                            cls = \'string\';
+        $content .= $this->format('<script src="https://cdn.bootcss.com/jquery-jsonview/1.2.3/jquery.jsonview.min.js"></script>
+            <script>
+                //页面加载json格式化
+                $(function () {
+                    $(".language-json5").each(function (i) {
+                        console.log($(this))
+                        var json = $(this).html();
+                        if (json != \'\' && json != \'undefined\'){
+                            $(this).JSONView(json);
                         }
-                    } else if (/true|false/.test(match)) {
-                        cls = \'boolean\';
-                    } else if (/null/.test(match)) {
-                        cls = \'null\';
-                    }
-                    return \'<span class="\' + cls + \'">\' + match + \'</span>\';
+                    })
                 });
-            }
-            document.getElementById(\'json_str\').innerHTML = result = JSON.stringify(JSON.parse(text), null, 2);
             </script>');
         $this->write($this->file, $content);
     }
-    
-    
+
+
     private function writeApiAction(array $class ,array $action = []){
         $content = '<ul>';
         $content .= $this->getActionRoute(
@@ -190,11 +185,11 @@ class DocHtml extends Doc
     }
 
     private function getActionSuccess($json){
-        return $this->format('<p>[success] : <code>成功返回样例</code></p><pre><code id="json_str" class="language-json5">'.$json.'</code></pre>');
+        return $this->format('<p>[success] : <code>成功返回样例</code></p><pre><code id="result" class="language-json5">'.$json.'</code></pre>');
     }
 
     private function getActionError($json){
-        return $this->format('<p>[error] : <code>失败返回样例</code></p><pre><code id="json_str" class="language-json5">'.$json.'</code></pre>');
+        return $this->format('<p>[error] : <code>失败返回样例</code></p><pre><code id="result" class="language-json5">'.$json.'</code></pre>');
     }
 
     /**
@@ -207,14 +202,4 @@ class DocHtml extends Doc
         return $content . PHP_EOL.PHP_EOL;
     }
 
-
-    /**
-     * 获取Toc内容文档
-     * @param string $content
-     * @return string
-     */
-    protected function formatToc(string $content = ''): string
-    {
-        return '<p><a href="#'.$content.'"></a>'.$content.'</p>' . PHP_EOL.PHP_EOL;
-    }
 }
