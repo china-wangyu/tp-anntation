@@ -148,7 +148,7 @@ class DocHtml extends Doc
         return '<li><p>[method] : <code>'.$method.'</code></p></li>';
     }
 
-    private function getActionParam(array $params = []){
+    private function getActionParam(array $params = null){
         $content = '<li>';
         $content .= '<p>[params] : <code>请求参数文档</code></p>';
         $content .= '<table>';
