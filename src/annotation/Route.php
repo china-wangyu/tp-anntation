@@ -4,7 +4,6 @@
 
 namespace WangYu\annotation;
 
-use think\App;
 use think\facade\Route as Router;
 use WangYu\exception\annotation\AnnotationException;
 use WangYu\utils\Helper;

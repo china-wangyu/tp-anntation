@@ -2,7 +2,7 @@
 /** Created By wene<china_wangyu@aliyun.com>, Data: 2019/7/16 */
 
 
-namespace WangYu\utils\exception;
+namespace WangYu\exception\utils;
 
 
 use WangYu\exception\Exception;
