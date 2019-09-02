@@ -26,4 +26,8 @@ class Validate extends \think\Validate
     public function getMessage(){
         return $this->message;
     }
+
+    public function getDefault(){
+        return $this->default;
+    }
 }
