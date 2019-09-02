@@ -10,7 +10,6 @@ use think\console\input\Argument;
 use think\console\input\Option;
 use think\console\Output;
 use think\Exception;
-use WangYu\annotation\lib\DocHtml;
 use WangYu\utils\Helper;
 
 /**
@@ -60,9 +59,7 @@ class DocCommand extends \think\console\Command
             $type = $input->getOption('type') ?? 'html';
             $filename = $input->getOption('name') ?? 'api-doc';
             $force = $input->getOption('force') ?? true;
-            foreach(Helper::getApiAnnotation($module) as $item){
-                array_push($apis,$item);
-            }
+            $apis = Helper::getApiAnnotation($module);
             $className = '\WangYu\annotation\lib\Doc'.ucfirst($type);
             $doc = new $className($filename,$apis,$force);
             $doc->execute();

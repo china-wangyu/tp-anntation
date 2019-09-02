@@ -5,7 +5,7 @@
 namespace WangYu\utils;
 
 
-use WangYu\utils\exception\UtilException;
+use WangYu\exception\utils\UtilsException;
 
 trait File
 {
@@ -13,22 +13,31 @@ trait File
      * 获取php类对象
      * @param $file
      * @return mixed
-     * @throws UtilException
+     * @throws UtilsException
      */
     static function getObject($file)
     {
         try {
             if (strstr($file, '.php') !== false) {
-                $namespace = str_replace(env('APP_PATH'), '/app/', $file);
-                $namespace = str_replace('.php', '', $namespace);
-                $namespace = str_replace('/', '\\', $namespace);
-                $namespace = str_replace('\\\\', '\\', $namespace);
-                return new $namespace();
+                return static::getThinkClass($file);
             }
             throw new \Exception('文件格式错误 . 当前格式为' . explode('.', basename($file))[1]);
         } catch (\Exception $exception) {
-            throw new UtilException('获取`.php`文件类实例对象失败 . ' . $exception->getMessage());
+            throw new UtilsException('获取`.php`文件类实例对象失败 . ' . $exception->getMessage());
         }
+    }
+
+    /**
+     * 获取thinkphp文件类
+     * @param $file
+     * @return mixed
+     */
+    static function getThinkClass($file){
+        $namespace = str_replace(env('APP_PATH'), '/app/', $file);
+        $namespace = str_replace('.php', '', $namespace);
+        $namespace = str_replace('/', '\\', $namespace);
+        $namespace = str_replace('\\\\', '\\', $namespace);
+        return new $namespace();
     }
 
 
@@ -63,7 +72,7 @@ trait File
     {
         try {
             if (is_file($file)) {
-                $newFile = env('ROOT_PATH') . 'backup-' . date('YmdHis') . '-' . basename($file);
+                $newFile = dirname($file) . '/backup-' . date('YmdHis') . '-' . basename($file);
                 if (!rename($file, $newFile)) throw new \Exception('备份文件失败~');
             }
         } catch (\Exception $exception) {

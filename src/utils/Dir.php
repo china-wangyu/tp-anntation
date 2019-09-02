@@ -5,7 +5,7 @@
 namespace WangYu\utils;
 
 
-use WangYu\utils\exception\UtilException;
+use WangYu\exception\utils\UtilsException;
 
 trait Dir
 {
@@ -31,7 +31,7 @@ trait Dir
             }
             return $files;
         } catch (\Exception $exception) {
-            throw new UtilException('获取文件夹下`' . $ext . '`文件失败 . ' . $exception->getMessage());
+            throw new UtilsException('获取文件夹下`' . $ext . '`文件失败 . ' . $exception->getMessage());
         }
     }
 
@@ -48,7 +48,7 @@ trait Dir
             $res = mkdir($path, 0755, true);
             if ($res == false) throw new \Exception('文件夹权限不够');
         } catch (\Exception $exception) {
-            throw new UtilException('创建`' . $dir . '`文件夹失败 . ' . $exception->getMessage());
+            throw new UtilsException('创建`' . $dir . '`文件夹失败 . ' . $exception->getMessage());
         }
     }
 

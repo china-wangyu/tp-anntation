@@ -6,7 +6,7 @@ namespace WangYu\utils;
 
 
 use WangYu\annotation\lib\ApiAnnotation;
-use WangYu\utils\exception\UtilException;
+use WangYu\exception\utils\UtilsException;
 
 trait Helper
 {
@@ -31,7 +31,7 @@ trait Helper
             }
             return empty($actions) ? [] : array_values($actions);
         } catch (\Exception $exception) {
-            throw new UtilException($exception->getMessage());
+            throw new UtilsException($exception->getMessage());
         }
     }
 
@@ -43,11 +43,9 @@ trait Helper
      */
     static function getApiAnnotation(string $module)
     {
-        $apiFiles = Dir::getFiles(env('APP_PATH') . '/' . $module . '/' . config('url_controller_layer'));
+        $apiFiles = Dir::getFiles(env('APP_PATH') . '/' . $module . '/' );
         $apiAnnotations = new ApiAnnotation($apiFiles);
-        foreach ($apiAnnotations->data as $api) {
-            yield $api;
-        }
+        return $apiAnnotations->data;
     }
 
     /**

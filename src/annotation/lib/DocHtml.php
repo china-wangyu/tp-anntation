@@ -1,6 +1,5 @@
 <?php
-/** Created by 嗝嗝<china_wangyu@aliyun.com>. Date:   */
-
+/** Created By wene<china_wangyu@aliyun.com>, Data: 2019/7/16 */
 namespace WangYu\annotation\lib;
 
 
