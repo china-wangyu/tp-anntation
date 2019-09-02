@@ -10,11 +10,11 @@
   "license": "MIT",
   "autoload": {
     "psr-4": {
-      "WangYu\\": "src",
-      "wangyu/reflex-core": "dev-reconfiguration"
+      "WangYu\\": "src"
     }
   },
   "require": {
-    "php": ">=7.1.0"
+    "php": ">=7.1.0",
+    "wangyu/reflex-core": "dev-reconfiguration"
   }
 }
