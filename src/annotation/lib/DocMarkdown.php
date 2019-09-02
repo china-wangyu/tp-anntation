@@ -1,11 +1,8 @@
 <?php
 /** Created By wene<china_wangyu@aliyun.com>, Data: 2019/7/16 */
-
 namespace WangYu\annotation\lib;
 
 
-use WangYu\exception\annotation\AnnotationException;
-use WangYu\utils\File;
 use WangYu\utils\Helper;
 
 class DocMarkdown extends Doc

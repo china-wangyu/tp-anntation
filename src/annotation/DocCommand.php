@@ -10,8 +10,6 @@ use think\console\input\Argument;
 use think\console\input\Option;
 use think\console\Output;
 use think\Exception;
-use WangYu\annotation\lib\ApiAnnotation;
-use WangYu\annotation\lib\DocHtml;
 use WangYu\utils\Helper;
 
 /**
@@ -56,6 +54,7 @@ class DocCommand extends \think\console\Command
     protected function execute(Input $input, Output $output)
     {
         try {
+            $apis = [];
             $module = $input->getOption('module') ?? 'api';
             $type = $input->getOption('type') ?? 'html';
             $filename = $input->getOption('name') ?? 'api-doc';
