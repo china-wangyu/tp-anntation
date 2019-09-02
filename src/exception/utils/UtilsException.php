@@ -7,7 +7,7 @@ namespace WangYu\exception\utils;
 
 use WangYu\exception\Exception;
 
-class UtilException extends Exception
+class UtilsException extends Exception
 {
     protected $user_code = 1003; // 工具箱报错code，从9000起
 }

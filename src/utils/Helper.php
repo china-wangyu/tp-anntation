@@ -6,7 +6,7 @@ namespace WangYu\utils;
 
 
 use WangYu\annotation\lib\ApiAnnotation;
-use WangYu\utils\exception\UtilException;
+use WangYu\exception\utils\UtilsException;
 
 trait Helper
 {
@@ -31,7 +31,7 @@ trait Helper
             }
             return empty($actions) ? [] : array_values($actions);
         } catch (\Exception $exception) {
-            throw new UtilException($exception->getMessage());
+            throw new UtilsException($exception->getMessage());
         }
     }
 

@@ -5,7 +5,7 @@
 namespace WangYu\utils;
 
 
-use WangYu\exception\utils\UtilException;
+use WangYu\exception\utils\UtilsException;
 
 trait File
 {
@@ -13,7 +13,7 @@ trait File
      * 获取php类对象
      * @param $file
      * @return mixed
-     * @throws UtilException
+     * @throws UtilsException
      */
     static function getObject($file)
     {
@@ -23,7 +23,7 @@ trait File
             }
             throw new \Exception('文件格式错误 . 当前格式为' . explode('.', basename($file))[1]);
         } catch (\Exception $exception) {
-            throw new UtilException('获取`.php`文件类实例对象失败 . ' . $exception->getMessage());
+            throw new UtilsException('获取`.php`文件类实例对象失败 . ' . $exception->getMessage());
         }
     }
 
