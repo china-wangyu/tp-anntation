@@ -1,0 +1,64 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "70d0ddee619283ac7e56158580171dc7",
+    "packages": [],
+    "packages-dev": [
+        {
+            "name": "wangyu/reflex-core",
+            "version": "0.1.0-alpha1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/china-wangyu/php-reflex-core.git",
+                "reference": "c04452cea0b7e225462a16085ce2d974d7aefa1d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/china-wangyu/php-reflex-core/zipball/c04452cea0b7e225462a16085ce2d974d7aefa1d",
+                "reference": "c04452cea0b7e225462a16085ce2d974d7aefa1d",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "php": ">=7.1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "WangYu\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "wangyu",
+                    "email": "china_wangyu@aliyun.com"
+                }
+            ],
+            "description": "原生PHP的反射注释模型,composer扩展",
+            "time": "2019-09-04T07:31:22+00:00"
+        }
+    ],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": {
+        "wangyu/reflex-core": 15
+    },
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": {
+        "php": ">=7.1.0"
+    },
+    "platform-dev": []
+}
