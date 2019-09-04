@@ -37,7 +37,7 @@ class DocCommand extends \think\console\Command
 
     protected function configure()
     {
-        $this->setName('doc:build')
+        $this->setName('annotation:doc')
             ->addOption('module',null, Option::VALUE_REQUIRED, "your API Folder,Examples: api = /application/api", 'api')
             ->addOption('type',null, Option::VALUE_REQUIRED, "your API file type,type = html or markdown", 'html')
             ->addOption('name',null, Option::VALUE_REQUIRED, "your API filename", 'api-doc')

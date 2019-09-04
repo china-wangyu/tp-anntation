@@ -1,0 +1,8 @@
+public function test{%action%}(){
+    $this->{%method%}("{%url%}",{%params%});
+    if ($this->response->getCode() == 200){
+        $this->assertTrue(true);
+    }else{
+        $this->assertTrue(false);
+    }
+}
