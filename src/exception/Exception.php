@@ -16,8 +16,8 @@ class Exception extends \Exception
     public function __construct($message = "", $code = 0, Throwable $previous = null)
     {
         parent::__construct(
-            $message ?? $this->message,
-            $code ?? $this->code,
+            empty($message) ?$this->message : $message,
+            empty($code) ?$this->code : $code,
             $previous
         );
     }

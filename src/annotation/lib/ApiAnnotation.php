@@ -37,6 +37,7 @@ class ApiAnnotation
             if (empty($apiFile)) return $this->data;
             foreach ($apiFile as $file) {
                 $this->object = File::getObject($file);
+                if ($this->object == false) continue;
                 $this->annotation = new Annotation($this->object);
                 $this->data[get_class($this->object)] = $this->get();
             }
