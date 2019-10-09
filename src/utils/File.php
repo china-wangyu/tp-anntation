@@ -37,7 +37,7 @@ trait File
         $namespace = str_replace('.php', '', $namespace);
         $namespace = str_replace('/', '\\', $namespace);
         $namespace = str_replace('\\\\', '\\', $namespace);
-        if (class_exist($namespace)){
+        if (class_exists($namespace)){
             return new $namespace();
         }
         return false;
