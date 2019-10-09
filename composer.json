@@ -14,11 +14,8 @@
     }
   },
   "require": {
-    "php": ">=7.1.0"
-  },
-
-  "require-dev": {
-    "wangyu/reflex-core": "0.1.0-alpha1"
+    "php": ">=7.1.0",
+    "wangyu/reflex-core": "0.1.0"
   }
 
 }
