@@ -33,7 +33,7 @@ class Validate
      * @param \think\Request $request
      * @param \Closure $next
      * @return mixed
-     * @throws AnnotationException
+     * @throws ValidateException
      */
     public function handle(\think\Request $request, \Closure $next)
     {
@@ -53,8 +53,6 @@ class Validate
 
     /**
      * 设置注解模型
-     * @param \think\Request $request
-     * @throws AnnotationException
      */
     protected function setAnnotation()
     {
@@ -80,7 +78,7 @@ class Validate
             $this->setValidateScene();
             $validateFile = File::screen($validateFileMaps,$this->request->controller().'.'.$this->annotation['validate']);
             $this->rule = File::getObject($validateFile);
-            if ($this->rule == '') throw new \Exception("注解验证器错误. @validate('$this->annotation['validate']')不存在");
+            if (empty($this->rule)) throw new \Exception("注解验证器错误. @validate('$this->annotation['validate']')不存在");
         }catch (\Exception $exception){
             throw new \Exception($exception->getMessage());
         }

@@ -16,9 +16,10 @@ class Exception extends \Exception
     public function __construct($message = "", $code = 0, Throwable $previous = null)
     {
         parent::__construct(
-            $message,
-            $code,
-            $previous);
+            empty($message) ?$this->message : $message,
+            empty($code) ?$this->code : $code,
+            $previous
+        );
     }
 
     public function getUserCode(): int
