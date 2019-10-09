@@ -43,7 +43,7 @@ trait Helper
      */
     static function getApiAnnotation(string $module)
     {
-        $apiFiles = Dir::getFiles(env('APP_PATH') . '/' . $module . '/' );
+        $apiFiles = Dir::getFiles(env('APP_PATH') . DIRECTORY_SEPARATOR . $module . DIRECTORY_SEPARATOR.config('url_controller_layer').DIRECTORY_SEPARATOR );
         $apiAnnotations = new ApiAnnotation($apiFiles);
         return $apiAnnotations->data;
     }
